@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../providers/AuthProvider';
 
 const Signup = () => {
+  const { createUser, setUser } = useContext(AuthContext);
+  // console.log();
   const [error, setError] = useState('');
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -9,6 +12,7 @@ const Signup = () => {
     const email = form.email.value;
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
+    setError('');
     if (password !== confirmPassword) {
       setError(`Repeated password didn't match`);
       return;
@@ -16,6 +20,17 @@ const Signup = () => {
       setError(`Your password is must be 6 characters or more`);
       return;
     }
+
+    createUser(email, password)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        setUser(loggedUser);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
   };
   return (
     <div className="hero min-h-screen bg-base-200">

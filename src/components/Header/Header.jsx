@@ -5,24 +5,39 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
-  return (
-    <nav className="header">
-      <img src={logo} alt="" />
-      <div>
-        <Link to="/">Shop</Link>
-        <Link to="/orders">Orders</Link>
-        <Link to="/inventory">Inventory</Link>
-        {user && (
-          <>
-            <Link to="/sign-up">Sign Out</Link>
-          </>
-        )}
-        <Link to="/sign-up">Sign Up</Link>
+  const { user, userLogOut } = useContext(AuthContext);
+  console.log(user);
 
-        <Link to="/login">Login</Link>
-      </div>
-    </nav>
+  // user log out
+  const handleLogOut = () => {
+    userLogOut()
+      .then(() => {})
+      .catch(() => {});
+  };
+  return (
+    <>
+      <nav className="header">
+        <img src={logo} alt="" />
+        <div>
+          <Link to="/">Shop</Link>
+          <Link to="/orders">Orders</Link>
+          <Link to="/inventory">Inventory</Link>
+          {user ? (
+            <Link>
+              <button onClick={handleLogOut} className="text-white">
+                Log Out
+              </button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/sign-up">Sign Up</Link>
+            </>
+          )}
+        </div>
+      </nav>
+      <div className="text-center">{user && <span>{user.email}</span>}</div>
+    </>
   );
 };
 
