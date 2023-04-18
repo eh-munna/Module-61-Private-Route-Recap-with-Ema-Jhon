@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState('');
   const { userLogIn } = useContext(AuthContext);
   const handleSubmit = (event) => {
@@ -16,6 +17,7 @@ const Login = () => {
         const loggedUser = result.user;
         console.log(loggedUser);
         form.reset();
+        navigate('/');
       })
       .catch((error) => {
         const errorMessage = error.message;
