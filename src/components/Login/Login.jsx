@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
   //   console.log(location);
   const [error, setError] = useState('');
+  const [passToggle, setPassToggle] = useState(true);
   const { userLogIn } = useContext(AuthContext);
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,13 +54,25 @@ const Login = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                required
-                name="password"
-                type="password"
-                placeholder="password"
-                className="input input-bordered"
-              />
+              <div className="relative flex items-center">
+                <input
+                  required
+                  name="password"
+                  type={passToggle ? `password` : `text`}
+                  placeholder="password"
+                  className=" input input-bordered w-full"
+                />
+                <span
+                  onClick={() => setPassToggle(!passToggle)}
+                  className="absolute right-2"
+                >
+                  {passToggle ? (
+                    <EyeSlashIcon className="h-6 w-6 text-blue-500" />
+                  ) : (
+                    <EyeIcon className="h-6 w-6 text-blue-500" />
+                  )}
+                </span>
+              </div>
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
