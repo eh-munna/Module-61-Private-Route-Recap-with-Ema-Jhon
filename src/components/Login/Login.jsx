@@ -1,9 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../providers/AuthProvider';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+  //   console.log(location);
   const [error, setError] = useState('');
   const { userLogIn } = useContext(AuthContext);
   const handleSubmit = (event) => {
@@ -17,7 +20,7 @@ const Login = () => {
         const loggedUser = result.user;
         console.log(loggedUser);
         form.reset();
-        navigate('/');
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -70,7 +73,10 @@ const Login = () => {
             <div>
               <Link></Link>
               <h3>
-                Don't have an Account? <Link to="/sign-up">Sign Up Now</Link>{' '}
+                Don't have an Account?{' '}
+                <Link className="underline" to="/sign-up">
+                  Sign Up Now
+                </Link>{' '}
               </h3>
             </div>
           </form>
